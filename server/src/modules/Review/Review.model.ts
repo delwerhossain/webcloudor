@@ -2,10 +2,10 @@ import { Schema, model } from 'mongoose';
 import { TReview } from './Review.interface';
 
 const ReviewShema = new Schema<TReview>({
-  courseId: {
+  orderId: {
     type: Schema.Types.ObjectId,
-    ref: 'course',
-    required: [true, 'Course Id required'],
+    ref: 'order',
+    required: [true, 'Order Id required'],
   },
   rating: {
     type: Number,

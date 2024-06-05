@@ -2,10 +2,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import cors from 'cors';
 import express, { NextFunction, Request, Response } from 'express';
-import { CourseRoutes } from './modules/courseModules/Course.routes';
 import { CategoryRoutes } from './modules/Category/Category.routes';
-import { ReviewRoutes } from './modules/ReviewModules/Review.routes';
+import { ReviewRoutes } from './modules/Review/Review.routes';
 import { ZodError } from 'zod';
+import { OrderRoutes } from './modules/Order/Order.routes';
 const app = express();
 
 //parsers
@@ -14,9 +14,9 @@ app.use(express.json());
 
 app.use(cors());
 
-app.use('/api/courses', CourseRoutes);
-// for Get the Best Course Based on Average Review (Rating)  /api/course/best
-app.use('/api/course', CourseRoutes);
+app.use('/api/orders', OrderRoutes);
+// for Get the Best Order Based on Average Review (Rating)  /api/order/best
+app.use('/api/order', OrderRoutes);
 app.use('/api/categories', CategoryRoutes);
 app.use('/api/reviews', ReviewRoutes);
 

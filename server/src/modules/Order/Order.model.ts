@@ -1,5 +1,5 @@
 import { Schema, model } from 'mongoose';
-import { TCourse, TDetails, Tags } from './Course.interface';
+import { TOrder, TDetails, Tags } from './Order.interface';
 
 const TagsSchema = new Schema<Tags>({
   name: {
@@ -11,7 +11,7 @@ const TagsSchema = new Schema<Tags>({
     default: false,
   },
 });
-
+// in Future we can add more fields
 const DetailsSchema = new Schema<TDetails>({
   level: {
     type: String,
@@ -26,59 +26,61 @@ const DetailsSchema = new Schema<TDetails>({
     type: String,
     trim: true,
     required: false,
-    default: 'Detailed description of the course',
+    default: 'Detailed description of the order',
   },
 });
 
-const courseSchema = new Schema<TCourse>({
-  title: {
+const orderSchema = new Schema<TOrder>({
+  email: {
     type: String,
     unique: true,
     trim: true,
     required: [true, 'Title is required'],
   },
 
-  instructor: {
+  name: {
     type: String,
     trim: true,
-    required: [true, 'Instructor is required'],
+    required: [true, 'Name is required'],
   },
   categoryId: {
     type: Schema.Types.ObjectId,
     required: [true, 'CategoryId is required'],
-
     ref: 'Category',
   },
   price: { type: Number, required: [true, 'Price is required'] },
-  tags: { type: [TagsSchema], required: [true, 'Tags is required'] },
+  tags: {
+    type: [TagsSchema] ,
+    default: [], // Ensure tags is always an array
+  },
+
   startDate: {
-    type: String,
+    type: Date,
     trim: true,
     required: [true, 'Start Date is required'],
   },
   endDate: {
-    type: String,
+    type: Date,
     trim: true,
     required: [true, 'End Date is required'],
   },
-  language: {
-    type: String,
-    trim: true,
-    required: [true, 'Language is required'],
+  userID: {
+    type: Number,
   },
 
-  provider: {
+  doneBy: {
     type: String,
     trim: true,
-    required: [true, 'provider is required'],
   },
-  durationInWeeks: {
+  durationInDays: {
     type: Number,
-    optional: true,
   },
-  details: { type: DetailsSchema, required: [true, 'Details is required'] },
-  averageRating: { type: Number, default: 0, select: false },
-  reviewCount: { type: Number, default: 0, select: false },
+  details: { type: String, trim: true },
+  phone: {
+    type: String,
+    required: [true, 'Phone number is required'],
+  },
+  address: { type: String },
 });
 
-export const CourseModel = model<TCourse>('course', courseSchema);
+export const OrderModel = model<TOrder>('order', orderSchema);

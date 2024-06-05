@@ -6,7 +6,7 @@ const CategoryShema = new Schema<TCategory>({
     type: String,
     unique: true,
     trim: true,
-    required: [true, 'Catetgory Name Required'],
+    required: [true, 'Category Name Required'],
   },
 });
 

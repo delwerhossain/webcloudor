@@ -28,7 +28,7 @@ const page = () => {
                   </span>
                 </p>
               </div>
-              <select className="focus:border-red-400 ring-red-700 focus:border rounded-full py-4 px-6 font-semibold  leading-7 text-white  bg-gradient-to-r from-amber-500 to-pink-500 max-lg:mt-5 shadow-sm shadow-transparent  duration-500 hover:bg-gradient-to-r hover:from-amber-600 hover:to-pink-700  transform transition  hover:scale-105 md:hover:scale-110 ">
+              <select className="focus:border focus:border-red-400 ring-red-700  rounded-full py-4 px-6 font-semibold  leading-7 text-white  bg-gradient-to-r from-amber-500 to-pink-500 max-lg:mt-5 shadow-sm shadow-transparent  duration-500 hover:bg-gradient-to-r hover:from-amber-600 hover:to-pink-700  transform transition  hover:scale-105 md:hover:scale-110 ">
                 <option  selected >
                 Choose Payment Method ?
                 </option>
@@ -128,8 +128,8 @@ const page = () => {
                   Cancel Order
                 </button>
                 <p className="font-medium text-lg text-gray-900 pl-6 py-3 max-lg:text-center">
-                  Paid using Credit Card{" "}
-                  <span className="text-gray-500">ending with 8822</span>
+                  Payment Method : {" "}
+                  <span className="text-gray-500">Bkash</span>
                 </p>
               </div>
               <p className="font-semibold text-lg text-black py-6">

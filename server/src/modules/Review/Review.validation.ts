@@ -1,7 +1,7 @@
 import { z } from 'zod';
 
 const reviewValidation = z.object({
-  courseId: z.string(),
+  orderId: z.string(),
   rating: z.number().min(0),
   review: z.string().trim().min(1),
 });

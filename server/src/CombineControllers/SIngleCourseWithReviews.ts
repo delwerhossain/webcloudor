@@ -1,24 +1,24 @@
 import { NextFunction, Request, Response } from 'express';
-import { CourseServices } from '../modules/courseModules/Course.service';
-import { ReviewServices } from '../modules/ReviewModules/Review.service';
+import { ReviewServices } from '../modules/Review/Review.service';
+import { OrderServices } from '../modules/Order/Order.service';
 
-const GetSingleCourseWithReviews = async (
+const GetSingleOrderWithReviews = async (
   req: Request,
   res: Response,
   next: NextFunction,
 ) => {
   try {
-    const { courseId } = req.params;
-    const result = await CourseServices.getSingleCourseInDB(courseId);
+    const { orderId } = req.params;
+    const result = await OrderServices.getSingleOrderInDB(orderId);
     if (Object.keys(result as object).length > 0) {
       const reviews =
-        await ReviewServices.GetallReviewsForAsingleUserInDB(courseId);
+        await ReviewServices.GetallReviewsForAsingleUserInDB(orderId);
 
       res.status(200).json({
         success: true,
         statusCode: 200,
-        message: 'Course retrieved successfully',
-        data: { course:result, reviews: reviews },
+        message: 'Order retrieved successfully',
+        data: { order:result, reviews: reviews },
       });
     }
   } catch (err) {
@@ -26,6 +26,6 @@ const GetSingleCourseWithReviews = async (
   }
 };
 
-export const CombineCourseReview = {
-  GetSingleCourseWithReviews,
+export const CombineOrderReview = {
+  GetSingleOrderWithReviews,
 };

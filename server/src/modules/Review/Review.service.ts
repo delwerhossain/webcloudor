@@ -1,35 +1,35 @@
 import { Types } from 'mongoose';
 import { TReview } from './Review.interface';
 import { ReviewModel } from './Review.model';
-import { CourseModel } from '../courseModules/Course.model';
+import { OrderModel } from '../Order/Order.model';
 
 const CreateReviewInDB = async (data: TReview) => {
   const result = await ReviewModel.create(data);
-  // Update course's average rating and review count using aggregation
-  const courseId = new Types.ObjectId(data.courseId);
-  const [courseStats] = await ReviewModel.aggregate([
+  // Update order's average rating and review count using aggregation
+  const orderId = new Types.ObjectId(data.orderId);
+  const [orderStats] = await ReviewModel.aggregate([
     {
-      $match: { courseId },
+      $match: { orderId },
     },
     {
       $group: {
         _id: null,
         totalRating: { $sum: '$rating' },
-        reviewCount: { $sum: 1 },
+        address: { $sum: 1 },
       },
     },
     {
       $project: {
         _id: 0,
-        averageRating: { $divide: ['$totalRating', '$reviewCount'] },
-        reviewCount: 1,
+        phone: { $divide: ['$totalRating', '$address'] },
+        address: 1,
       },
     },
   ]);
 
-  await CourseModel.findByIdAndUpdate(courseId, {
-    averageRating: courseStats?.averageRating || 0,
-    reviewCount: courseStats?.reviewCount || 0,
+  await OrderModel.findByIdAndUpdate(orderId, {
+    phone: orderStats?.phone || 0,
+    address: orderStats?.address || 0,
   });
 
   return result;
@@ -41,7 +41,7 @@ const GetallReviewsInDB = async () => {
 };
 const GetallReviewsForAsingleUserInDB = async (id: string) => {
   const result = await ReviewModel.find({
-    courseId: { $eq: id },
+    orderId: { $eq: id },
   });
 
   return result;
