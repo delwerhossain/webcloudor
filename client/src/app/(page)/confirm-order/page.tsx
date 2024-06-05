@@ -29,7 +29,7 @@ const page = () => {
                 </p>
               </div>
               <select className="focus:border-red-400 ring focus:border rounded-full py-3 px-7 font-semibold  leading-7 text-white  bg-gradient-to-r from-amber-500 to-pink-500 max-lg:mt-5 shadow-sm shadow-transparent transition-all duration-500 hover:bg-gradient-to-r hover:from-pink-500 hover:to-amber-500  ">
-                <option disabled selected>
+                <option disabled selected defaultValue={''}>
                 Choose Payment Method ?
                 </option>
                 <option className="text-black hover:bg-black hover:text-white">Bkash</option>
@@ -121,8 +121,8 @@ const page = () => {
                     <path
                       d="M5.5 5.5L16.5 16.5M16.5 5.5L5.5 16.5"
                       stroke=""
-                      stroke-width="1.6"
-                      stroke-linecap="round"
+                      strokeWidth="1.6"
+                      strokeLinecap="round"
                     />
                   </svg>
                   Cancel Order
