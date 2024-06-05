@@ -1,5 +1,3 @@
-import React from "react";
-
 const OrderForm = () => {
   return (
     <div className="w-full border rounded-xl   p-4 md:p-8">
@@ -58,9 +56,9 @@ const OrderForm = () => {
           </select>
         </div>
         
-        <div className="w-full p-3">
+        <div className="w-full lg:w-2/5 p-3">
           <a
-            className="inline-block mb-4 px-5 py-4 w-full text-lg text-white text-center font-semibold tracking-tight bg-gradient-to-r from-violet-500 to-indigo-500 hover:bg-gradient-to-r hover:from-indigo-600 hover:to-violet-600 rounded-lg focus:ring-4 focus:ring-indigo-300 transition duration-200"
+            className="inline-block mb-4 px-4 py-3.5 w-full text-lg text-white text-center font-semibold tracking-tight bg-gradient-to-r from-amber-500 to-pink-600 hover:bg-gradient-to-r hover:from-amber-600 hover:to-pink-700 rounded-full focus:ring-4 focus:ring-pink-300 transform duration-500 transition  hover:scale-105 md:hover:scale-105"
             href="#"
           >
             Place Order

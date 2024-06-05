@@ -3,13 +3,13 @@ import Image from "next/image";
 
 const page = () => {
   return (
-    <div>
-      <section className="py-24 relative">
+    <div className="transition-all duration-1000">
+      <section className="py-8 relative">
         <div className="w-full max-w-7xl px-4 md:px-5 lg-6 mx-auto">
           <h2 className="font-manrope font-bold text-4xl leading-10 text-black text-center">
-            Payment Details 
+            Payment Overview 
           </h2>
-          <p className="mt-4 font-normal text-lg leading-8 text-gray-500 mb-11 text-center">
+          <p className="mt-3 font-normal text-lg leading-8 text-gray-500 mb-8 text-center">
             Thanks for making a purchase you can check our order summary frm
             below
           </p>
@@ -28,23 +28,23 @@ const page = () => {
                   </span>
                 </p>
               </div>
-              <select className="focus:border-red-400 ring focus:border rounded-full py-3 px-7 font-semibold  leading-7 text-white  bg-gradient-to-r from-amber-500 to-pink-500 max-lg:mt-5 shadow-sm shadow-transparent transition-all duration-500 hover:bg-gradient-to-r hover:from-pink-500 hover:to-amber-500  ">
-                <option disabled selected defaultValue={''}>
+              <select className="focus:border-red-400 ring-red-700 focus:border rounded-full py-4 px-6 font-semibold  leading-7 text-white  bg-gradient-to-r from-amber-500 to-pink-500 max-lg:mt-5 shadow-sm shadow-transparent  duration-500 hover:bg-gradient-to-r hover:from-amber-600 hover:to-pink-700  transform transition  hover:scale-105 md:hover:scale-110 ">
+                <option  selected >
                 Choose Payment Method ?
                 </option>
-                <option className="text-black hover:bg-black hover:text-white">Bkash</option>
-                <option className="text-black hover:bg-black hover:text-white">Cash on delivery</option>
+                <option value={'bkash'} className="text-black hover:bg-black hover:text-white">Bkash</option>
+                <option value={'COD'} className="text-black hover:bg-black hover:text-white">Cash on delivery</option>
               </select>
             </div>
             <div className="w-full px-3 min-[400px]:px-6">
               <div className="flex flex-col lg:flex-row items-center py-6 border-b border-gray-200 gap-6 w-full">
-                <div className="img-box max-lg:w-full">
+                <div className="img-box grid justify-center max-lg:w-full">
                   <Image
                     width="400"
                     height="400"
                     alt="Profile Picture"
-                    src="/1701167607.png"
-                    className="aspect-square w-full lg:max-w-[140px]"
+                    src="/web-demo.jpg"
+                    className=" aspect-square text-center w-[200px] lg:max-w-[140px] rounded-xl"
                   />
                 </div>
                 <div className="flex flex-row items-center w-full ">
