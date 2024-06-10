@@ -34,9 +34,8 @@ const getSingleOrderInDB = async (id: string) => {
 
 const updateOrderInDB = async (id: string, data: Partial<TOrder>) => {
   try {
-    console.log(data);
-    // Extract the tags and other update data from the incoming data
-    const { tags, details, ...updateData } = data;
+    // Extract other update data from the incoming data
+    const {...updateData } = data;
 
     // Fetch the existing order
     const existingOrder = await OrderModel.findById(id);
@@ -46,36 +45,7 @@ const updateOrderInDB = async (id: string, data: Partial<TOrder>) => {
       throw new Error('Order not found');
     }
 
-    // Ensure tags is always an array
-    if (!existingOrder.tags) {
-      existingOrder.tags = [];
-    }
-
-    // Update the tags based on the incoming data
-    if (tags && Array.isArray(tags)) {
-      tags.forEach((newTag) => {
-        const existingTagIndex = existingOrder.tags.findIndex(
-          (tag) => tag.name === newTag.name,
-        );
-
-        if (existingTagIndex !== -1) {
-          // Update the existing tag if it exists
-          existingOrder.tags[existingTagIndex] = newTag;
-        } else if (!newTag.isDeleted) {
-          // Add the new tag if it doesn't exist and is not marked as deleted
-          existingOrder.tags.push(newTag);
-        }
-      });
-
-      // Remove tags marked as deleted
-      existingOrder.tags = existingOrder.tags.filter((tag) => !tag.isDeleted);
-    }
-
-    if (details) {
-      existingOrder.details = details;
-    }
-
-    // Update other fields as needed
+    // Update other fields as needed & existingOrder is now updated
     Object.assign(existingOrder, updateData);
 
     // Save the updated order
@@ -97,7 +67,7 @@ const getBestOrderInDB = async () => {
   const bestOrder = await OrderModel.findOne()
     .sort('-phone')
     .select(
-      '_id email name categoryId price tags startDate endDate userID doneBy durationInDays details phone address',
+      '_id email name categoryId price startDate endDate userID doneBy durationInDays description phone address',
     )
     .lean();
   return bestOrder;

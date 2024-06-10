@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import { TOrder, TDetails, Tags } from './Order.interface';
 
 const TagsSchema = new Schema<Tags>({
-  name: {
+  productName: {
     type: String,
     required: [true, 'Tag name is required'],
   },
@@ -31,14 +31,7 @@ const DetailsSchema = new Schema<TDetails>({
 });
 
 const orderSchema = new Schema<TOrder>({
-  email: {
-    type: String,
-    unique: true,
-    trim: true,
-    required: [true, 'Title is required'],
-  },
-
-  name: {
+  productName: {
     type: String,
     trim: true,
     required: [true, 'Name is required'],
@@ -49,11 +42,6 @@ const orderSchema = new Schema<TOrder>({
     ref: 'Category',
   },
   price: { type: Number, required: [true, 'Price is required'] },
-  tags: {
-    type: [TagsSchema] ,
-    default: [], // Ensure tags is always an array
-  },
-
   startDate: {
     type: Date,
     trim: true,
@@ -65,22 +53,18 @@ const orderSchema = new Schema<TOrder>({
     required: [true, 'End Date is required'],
   },
   userID: {
-    type: Number,
+    type: Schema.Types.ObjectId,
+    ref: 'User', // Assuming there is a User collection to reference
   },
 
   doneBy: {
-    type: String,
+    type: String, // who is doing the order 
     trim: true,
   },
   durationInDays: {
     type: Number,
   },
-  details: { type: String, trim: true },
-  phone: {
-    type: String,
-    required: [true, 'Phone number is required'],
-  },
-  address: { type: String },
+  description: { type: String, trim: true }
 });
 
 export const OrderModel = model<TOrder>('order', orderSchema);

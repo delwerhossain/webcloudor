@@ -1,7 +1,7 @@
 import { Schema, model } from 'mongoose';
 import { TCategory } from './Category.interface';
 
-const CategoryShema = new Schema<TCategory>({
+const CategorySchema = new Schema<TCategory>({
   name: {
     type: String,
     unique: true,
@@ -10,4 +10,4 @@ const CategoryShema = new Schema<TCategory>({
   },
 });
 
-export const CategoryModel = model<TCategory>('category', CategoryShema);
+export const CategoryModel = model<TCategory>('category', CategorySchema);
