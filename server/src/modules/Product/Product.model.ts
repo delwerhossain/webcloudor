@@ -56,6 +56,11 @@ const ProductSchema = new Schema<TProduct>({
     type: Number,
     required: [true, 'Quantity Required'],
   },
+  uploadByUserID: {
+    type: Schema.Types.ObjectId,
+    trim: true,
+    required: [true, 'Uploaded By user ID Required'],
+  },
   reviews: {
     type: [reviewDetailsSchema],
     default: [],

@@ -15,5 +15,6 @@ export interface TProduct {
   image: string;
   categoryID: Types.ObjectId;
   quantity: number;
+  uploadByUserID: Types.ObjectId;
   reviews: TReviewDetails[];
 }
