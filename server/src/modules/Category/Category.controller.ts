@@ -27,8 +27,8 @@ const CreateCategory = async (
 ) => {
   try {
     const data = req.body;
-    const ZODvalidation = CategoryValidation.categoryValidation.parse(data);
-    const result = await CategoryServices.CreateCategoryInDB(ZODvalidation);
+    const ZodValidation = CategoryValidation.categoryValidation.parse(data);
+    const result = await CategoryServices.CreateCategoryInDB(ZodValidation);
     res.status(201).json({
       success: true,
       statusCode: 201,
