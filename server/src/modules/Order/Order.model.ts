@@ -65,6 +65,6 @@ const orderSchema = new Schema<TOrder>({
     type: Number,
   },
   description: { type: String, trim: true }
-});
+}, { timestamps: true });
 
 export const OrderModel = model<TOrder>('order', orderSchema);

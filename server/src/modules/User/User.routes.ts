@@ -3,8 +3,8 @@ import { UserControllers } from './User.controller';
 const router = Router();
 
 router.get('/', UserControllers.GetAllUsers);
-router.get('/:id', UserControllers.getSingleUser);
+router.get('/:id', UserControllers.GetSingleUser);
 router.post('/', UserControllers.CreateUser);
-router.post('/:id', UserControllers.UpdateUser);
+router.patch('/:id', UserControllers.UpdateUser);
 
 export const UserRoutes = router;

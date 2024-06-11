@@ -8,6 +8,6 @@ const CategorySchema = new Schema<TCategory>({
     trim: true,
     required: [true, 'Category Name Required'],
   },
-});
+}, { timestamps: true });
 
 export const CategoryModel = model<TCategory>('category', CategorySchema);

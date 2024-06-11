@@ -127,7 +127,7 @@ const UpdateProduct = async (
   }
 };
 
-const getSingleProduct = async (
+const GetSingleProduct = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -150,5 +150,5 @@ export const ProductControllers = {
   GetAllProducts,
   CreateProduct,
   UpdateProduct,
-  getSingleProduct,
+  GetSingleProduct,
 };

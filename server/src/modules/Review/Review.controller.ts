@@ -28,7 +28,7 @@ const GetAllReview = async (
   next: NextFunction,
 ) => {
   try {
-    const result = await ReviewServices.GetallReviewsInDB();
+    const result = await ReviewServices.GetAllReviewsInDB();
     res.status(200).json({
       success: true,
       statusCode: 200,

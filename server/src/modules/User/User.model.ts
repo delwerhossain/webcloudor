@@ -49,6 +49,6 @@ const UserSchema = new Schema<TUser>({
     type: [OrderDetailsSchema],
     default: []
   }
-});
+}, { timestamps: true });
 
 export const UserModel = model<TUser>('user', UserSchema);

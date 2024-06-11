@@ -35,11 +35,11 @@ const CreateReviewInDB = async (data: TReview) => {
   return result;
 };
 
-const GetallReviewsInDB = async () => {
+const GetAllReviewsInDB = async () => {
   const result = await ReviewModel.find();
   return result;
 };
-const GetallReviewsForAsingleUserInDB = async (id: string) => {
+const GetAllReviewsForSingleUserInDB = async (id: string) => {
   const result = await ReviewModel.find({
     orderId: { $eq: id },
   });
@@ -48,6 +48,6 @@ const GetallReviewsForAsingleUserInDB = async (id: string) => {
 };
 export const ReviewServices = {
   CreateReviewInDB,
-  GetallReviewsInDB,
-  GetallReviewsForAsingleUserInDB,
+  GetAllReviewsInDB,
+  GetAllReviewsForSingleUserInDB,
 };

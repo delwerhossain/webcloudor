@@ -35,8 +35,7 @@ const CreateOrder = async (
 };
 
 
-
-const GetallOrder = async (
+const GetAllOrder = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -53,7 +52,9 @@ const GetallOrder = async (
       endDate,
       userID,
       doneBy,
-      durationInDays,     
+      durationInDays,
+      productName, // new
+      categoryId,  // new
     } = req.query;
 
     const pageNumber = Array.isArray(page) ? parseInt(page[0] as string, 10) : parseInt(page as string, 10);
@@ -64,9 +65,11 @@ const GetallOrder = async (
     if (maxPrice) filter.price = { ...filter.price, $lte: parseFloat(maxPrice as string) };
     if (startDate) filter.startDate = { $gte: new Date(startDate as string) };
     if (endDate) filter.endDate = { $lte: new Date(endDate as string) };
-    if (userID) filter.userID = parseInt(userID as string, 10);
+    if (userID) filter.userID = userID;
     if (doneBy) filter.doneBy = doneBy;
     if (durationInDays) filter.durationInDays = parseInt(durationInDays as string, 10);
+    if (productName) filter.productName = { $regex: new RegExp(productName as string, 'i') };
+    if (categoryId) filter.categoryId = categoryId;
 
     const sort: any = {};
     if (sortBy) sort[sortBy as string] = sortOrder === 'desc' ? -1 : 1;
@@ -88,6 +91,7 @@ const GetallOrder = async (
     next(err);
   }
 };
+
 
 
 const GetSingleOrder = async (
@@ -189,7 +193,7 @@ const GetBestReview = async (
 
 export const OrderControllers = {
   CreateOrder,
-  GetallOrder,
+  GetAllOrder,
   GetSingleOrder,
   updateOrder,
   deleteOrder,

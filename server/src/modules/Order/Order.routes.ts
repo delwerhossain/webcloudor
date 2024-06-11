@@ -5,9 +5,9 @@ import { OrderControllers } from './Order.controller';
 
 const router = Router();
 
-router.put('/:orderId', OrderControllers.updateOrder);
+router.patch('/:orderId', OrderControllers.updateOrder);
 router.post('/', OrderControllers.CreateOrder);
-router.get('/', OrderControllers.GetallOrder);
+router.get('/', OrderControllers.GetAllOrder);
 // router.get('/best', OrderControllers.GetBestReview);
 // router.get(
 //   '/:orderId/reviews',

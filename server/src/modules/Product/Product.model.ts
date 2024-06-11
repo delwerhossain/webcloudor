@@ -65,7 +65,7 @@ const ProductSchema = new Schema<TProduct>({
     type: [reviewDetailsSchema],
     default: [],
   },
-});
+}, { timestamps: true });
 
 // Export the Product model
 export const ProductModel = model<TProduct>('Product', ProductSchema);

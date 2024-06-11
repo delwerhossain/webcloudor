@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { NextFunction, Request, Response } from 'express';
 import { CategoryServices } from './Category.service';
 import { CategoryValidation } from './Category.validation';
@@ -8,12 +9,43 @@ const GetAllCategories = async (
   next: NextFunction,
 ) => {
   try {
-    const result = await CategoryServices.GetAllCategories();
+    const {
+      page = '1',
+      limit = '10',
+      sortBy,
+      sortOrder,
+      categoryName, // Corrected parameter name
+    } = req.query;
+
+    const pageNumber = Array.isArray(page)
+      ? parseInt(page[0] as string, 10)
+      : parseInt(page as string, 10);
+    const limitNumber = parseInt(limit as string, 10);
+
+    const filter: any = {};
+    if (categoryName)
+      filter.name = { $regex: new RegExp(categoryName as string, 'i') };
+
+    const sort: any = {};
+    if (sortBy) sort[sortBy as string] = sortOrder === 'desc' ? -1 : 1;
+
+    const result = await CategoryServices.GetAllCategoriesInDB(
+      filter,
+      sort,
+      pageNumber,
+      limitNumber,
+    );
+
     res.status(200).json({
       success: true,
       statusCode: 200,
       message: 'Categories retrieved successfully',
-      data: result,
+      meta: {
+        page: pageNumber,
+        limit: limitNumber,
+        total: result.total,
+      },
+      data: result.data,
     });
   } catch (err) {
     next(err);
@@ -40,7 +72,31 @@ const CreateCategory = async (
   }
 };
 
-const getSingleCategory = async (
+// category update
+
+const UpdateCategory = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  try {
+    const { id } = req.params;
+    const data = req.body;
+    const ZodValidation =
+      CategoryValidation.categoryUpdateValidation.parse(data);
+    const result = await CategoryServices.UpdateCategoryInDB(id, ZodValidation);
+    res.status(201).json({
+      success: true,
+      statusCode: 201,
+      message: 'Category updated successfully',
+      data: result,
+    });
+  } catch (err) {
+    next(err);
+  }
+};
+
+const GetSingleCategory = async (
   req: Request,
   res: Response,
   next: NextFunction,
@@ -62,5 +118,6 @@ const getSingleCategory = async (
 export const CategoryControllers = {
   GetAllCategories,
   CreateCategory,
-  getSingleCategory,
+  GetSingleCategory,
+  UpdateCategory
 };
