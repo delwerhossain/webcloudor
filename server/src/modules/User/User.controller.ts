@@ -29,8 +29,8 @@ const CreateUser = async (
 ) => {
   try {
     const data = req.body;
-    const ZODvalidation = UserValidation.userValidation.parse(data);
-    const result = await UserServices.CreateUserInDB(ZODvalidation);
+    const ZodValidation = UserValidation.userValidation.parse(data);
+    const result = await UserServices.CreateUserInDB(ZodValidation);
     res.status(201).json({
       success: true,
       statusCode: 201,
@@ -63,9 +63,9 @@ const UpdateUser = async (
     }
 
     // Validate the data using Zod
-    let ZODvalidation: Partial<TUser>;
+    let ZodValidation: Partial<TUser>;
     try {
-      ZODvalidation = UserValidation.userUpdateValidation.parse(data);
+      ZodValidation = UserValidation.userUpdateValidation.parse(data);
     } catch (validationError) {
       return res.status(400).json({
         success: false,
@@ -76,7 +76,7 @@ const UpdateUser = async (
     }
 
     // Update user in the database
-    const result = await UserServices.UpdateUserInDB(id, ZODvalidation);
+    const result = await UserServices.UpdateUserInDB(id, ZodValidation);
 
     res.status(201).json({
       success: true,
