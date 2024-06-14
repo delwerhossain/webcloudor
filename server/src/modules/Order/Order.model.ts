@@ -1,70 +1,99 @@
 import { Schema, model } from 'mongoose';
-import { TOrder, TDetails, Tags } from './Order.interface';
+import { TOrder, IPaymentDetails, IAddress, IOrderItem } from './Order.interface';
 
-const TagsSchema = new Schema<Tags>({
-  productName: {
+// Define the PaymentDetails sub-schema
+const PaymentDetailsSchema = new Schema<IPaymentDetails>({
+  paymentType: {
     type: String,
-    required: [true, 'Tag name is required'],
+    enum: ['Cash', 'Card', 'Bkash', 'Rocket', 'Nagad', 'Upay', 'Bank', 'SSLCOMMERZ'],
+    required: true,
   },
-  isDeleted: {
-    type: Boolean,
-    default: false,
+  cardDetails: {
+    cardNumber: { type: String, required: function() { return this.paymentType === 'Card'; } },
+    cardHolderName: { type: String, required: function() { return this.paymentType === 'Card'; } },
+    expiryDate: { type: String, required: function() { return this.paymentType === 'Card'; } },
+  },
+  mobileWalletDetails: {
+    walletNumber: { type: String, required: function() { return ['Bkash', 'Rocket', 'Nagad', 'Upay'].includes(this.paymentType); } },
+    transactionId: { type: String, required: function() { return ['Bkash', 'Rocket', 'Nagad', 'Upay'].includes(this.paymentType); } },
+  },
+  bankDetails: {
+    accountNumber: { type: String, required: function() { return this.paymentType === 'Bank'; } },
+    bankName: { type: String, required: function() { return this.paymentType === 'Bank'; } },
+    accountHolderName: { type: String, required: function() { return this.paymentType === 'Bank'; } },
+  },
+  sslCommerzDetails: {
+    transactionId: { type: String, required: function() { return this.paymentType === 'SSLCOMMERZ'; } },
+  },
+  amount: {
+    type: Number,
+    required: true,
+  },
+  date: {
+    type: Date,
+    default: Date.now,
+  },
+  status: {
+    type: String,
+    enum: ['Pending', 'Success', 'Failed'],
+    default: 'Pending',
   },
 });
-// in Future we can add more fields
-const DetailsSchema = new Schema<TDetails>({
-  level: {
-    type: String,
-    enum: {
-      values: ['Beginner', 'Intermediate', 'Advanced'],
-      message: 'Level must be either Beginner, Intermediate or Advanced',
-    },
 
-    required: [true, 'Level is required'],
-  },
-  description: {
-    type: String,
-    trim: true,
-    required: false,
-    default: 'Detailed description of the order',
-  },
+// Define the Address sub-schema
+const AddressSchema = new Schema<IAddress>({
+  street: { type: String, required: true },
+  city: { type: String, required: true },
+  state: { type: String, required: true },
+  postalCode: { type: String, required: true },
+  country: { type: String, required: true },
 });
 
+// Define the OrderItem sub-schema
+const OrderItemSchema = new Schema<IOrderItem>({
+  productId: { type: Schema.Types.ObjectId, ref: 'Product', required: true },
+  quantity: { type: Number, required: true },
+  price: { type: Number, required: true },
+});
+
+// Define the main Order schema
 const orderSchema = new Schema<TOrder>({
   productName: {
     type: String,
     trim: true,
-    required: [true, 'Name is required'],
+    required: [true, 'Product name is required'],
   },
   categoryId: {
     type: Schema.Types.ObjectId,
-    required: [true, 'CategoryId is required'],
+    required: [true, 'Category ID is required'],
     ref: 'Category',
   },
   price: { type: Number, required: [true, 'Price is required'] },
-  startDate: {
-    type: Date,
-    trim: true,
-    required: [true, 'Start Date is required'],
-  },
-  endDate: {
-    type: Date,
-    trim: true,
-    required: [true, 'End Date is required'],
-  },
   userID: {
     type: Schema.Types.ObjectId,
-    ref: 'User', // Assuming there is a User collection to reference
+    ref: 'User',
+    required: true,
   },
-
   doneBy: {
-    type: String, // who is doing the order 
+    type: String,
     trim: true,
   },
+  paymentDetails: [PaymentDetailsSchema],
   durationInDays: {
     type: Number,
   },
-  description: { type: String, trim: true }
+  description: { type: String, trim: true },
+  orderItems: [OrderItemSchema],
+  totalAmount: { type: Number, required: true },
+  shippingAddress: AddressSchema,
+  billingAddress: AddressSchema,
+  status: {
+    type: String,
+    required: true,
+    enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'],
+  },
+  orderDate: { type: Date, default: Date.now },
+  deliveryDate: { type: Date },
 }, { timestamps: true });
 
-export const OrderModel = model<TOrder>('order', orderSchema);
+export const OrderModel = model<TOrder>('Order', orderSchema);
