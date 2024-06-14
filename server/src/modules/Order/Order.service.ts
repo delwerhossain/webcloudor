@@ -67,7 +67,7 @@ const getBestOrderInDB = async () => {
   const bestOrder = await OrderModel.findOne()
     .sort('-phone')
     .select(
-      '_id email name categoryId price startDate endDate userID doneBy durationInDays description phone address',
+      '_id email name categoryId price orderDate deliveryDate userID doneBy durationInDays description phone address',
     )
     .lean();
   return bestOrder;

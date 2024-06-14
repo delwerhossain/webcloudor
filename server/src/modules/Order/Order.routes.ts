@@ -5,18 +5,18 @@ import { OrderControllers } from './Order.controller';
 
 const router = Router();
 
-router.patch('/:orderId', OrderControllers.updateOrder);
+router.patch('/:orderID', OrderControllers.updateOrder);
 router.post('/', OrderControllers.CreateOrder);
 router.get('/', OrderControllers.GetAllOrder);
 // router.get('/best', OrderControllers.GetBestReview);
 // router.get(
-//   '/:orderId/reviews',
+//   '/:orderID/reviews',
 //   CombineOrderReview.GetSingleOrderWithReviews,
 // );
-router.get('/:orderId', OrderControllers.GetSingleOrder);
+router.get('/:orderID', OrderControllers.GetSingleOrder);
 
 //* order id neVER be deleted
-// router.delete('/:orderId', OrderControllers.deleteOrder);
+// router.delete('/:orderID', OrderControllers.deleteOrder);
 
 
 

@@ -1,10 +1,14 @@
 import { Types } from 'mongoose';
 
 export type TReview = {
-  orderId: Types.ObjectId;
-  rating: number;
-  review: string;
-  // createdAt: Date;
-  // updatedAt: Date;
-  // userId: Types.ObjectId;
+  productID: Types.ObjectId;
+  reviewDetails: TReviewDetails[]
 };
+
+export type TReviewDetails = {
+  userID: Types.ObjectId;
+  orderID: Types.ObjectId;
+  rating: number;
+  comment: string;
+  date: Date;
+}

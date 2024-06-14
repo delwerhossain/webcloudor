@@ -6,10 +6,10 @@ import { OrderModel } from '../Order/Order.model';
 const CreateReviewInDB = async (data: TReview) => {
   const result = await ReviewModel.create(data);
   // Update order's average rating and review count using aggregation
-  const orderId = new Types.ObjectId(data.orderId);
+  const orderID = new Types.ObjectId(data.orderID);
   const [orderStats] = await ReviewModel.aggregate([
     {
-      $match: { orderId },
+      $match: { orderID },
     },
     {
       $group: {
@@ -27,7 +27,7 @@ const CreateReviewInDB = async (data: TReview) => {
     },
   ]);
 
-  await OrderModel.findByIdAndUpdate(orderId, {
+  await OrderModel.findByIdAndUpdate(orderID, {
     phone: orderStats?.phone || 0,
     address: orderStats?.address || 0,
   });
@@ -41,7 +41,7 @@ const GetAllReviewsInDB = async () => {
 };
 const GetAllReviewsForSingleUserInDB = async (id: string) => {
   const result = await ReviewModel.find({
-    orderId: { $eq: id },
+    orderID: { $eq: id },
   });
 
   return result;

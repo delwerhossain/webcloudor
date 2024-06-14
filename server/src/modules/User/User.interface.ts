@@ -1,18 +1,10 @@
 // User.type.ts
-
-import { Types } from 'mongoose';
-
-export type TOrderDetails = {
-  orderId: Types.ObjectId;
-  rating?: number;
-  review?: string;
-};
+import { IAddress } from '../Order/Order.interface';
 
 export type TUser = {
   userType?: 'superAdmin' | 'admin' | 'user';
   name: string;
   email: string;
-  number: string;
-  address: string;
-  orderDetails?: TOrderDetails[];
+  phoneNumber: string;
+  address: IAddress;
 };

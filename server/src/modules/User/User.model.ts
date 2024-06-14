@@ -1,21 +1,7 @@
 import { Schema, model } from 'mongoose';
-import { TOrderDetails, TUser } from './User.interface';
+import { AddressSchema } from '../Order/Order.model';
+import { TUser } from './User.interface';
 
-const OrderDetailsSchema = new Schema<TOrderDetails>({
-  orderId: {
-    type: Schema.Types.ObjectId,
-    ref: 'order',
-    required: [true, 'Order Id required'],
-  },
-  rating: {
-    type: Number,
-    min: 1,
-    max: 5,
-  },
-  review: {
-    type: String,
-  },
-});
 
 const UserSchema = new Schema<TUser>({
   userType: {
@@ -35,20 +21,13 @@ const UserSchema = new Schema<TUser>({
     trim: true,
     required: [true, 'Email Required'],
   },
-  number: {
+  phoneNumber: {
     type: String,
+    unique: true,
     trim: true,
     required: [true, 'Number Required'],
   },
-  address: {
-    type: String,
-    trim: true,
-    required: [true, 'Address Required'],
-  },
-  orderDetails:{
-    type: [OrderDetailsSchema],
-    default: []
-  }
+  address: [AddressSchema],
 }, { timestamps: true });
 
 export const UserModel = model<TUser>('user', UserSchema);

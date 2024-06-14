@@ -1,33 +1,23 @@
 import { z } from 'zod';
+import { addressValidation } from '../Order/Order.validation';
 const phoneRegex = /^(\+?\d{1,4}[\s-]?)?(\(?\d{3}\)?[\s-]?)?[\d\s-]{7,10}$/;
 
-const userValidation = z.object({
+const user = z.object({
   userType: z.enum(['superAdmin', 'admin', 'user']),
   name: z.string().trim().min(1),
   email: z.string().trim().min(1),
-  number: z
+  phoneNumber: z
     .string()
     .trim()
     .regex(
       phoneRegex,
       'Invalid phone number format. It should be a 10-digit number.',
     ),
-  address: z.string().trim().min(1),
+  address: addressValidation,
 });
-const userUpdateValidation = z.object({
-  userType: z.enum(['superAdmin', 'admin', 'user']).optional(),
-  name: z.string().trim().min(1).optional(),
-  email: z.string().trim().min(1).optional(),
-  number: z
-    .string()
-    .trim()
-    .regex(
-      phoneRegex,
-      'Invalid phone number format. It should be a 10-digit number.',
-    )
-    .optional(),
-  address: z.string().trim().min(1).optional(),
-});
+
+const userValidation = user
+const userUpdateValidation = user.partial();
 export const UserValidation = {
   userValidation,
   userUpdateValidation,
