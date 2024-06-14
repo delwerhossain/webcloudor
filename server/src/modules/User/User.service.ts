@@ -2,10 +2,12 @@
 import { TUser } from './User.interface';
 import { UserModel } from './User.model';
 
-const CreateUserInDB = async (data: TUser) => {
-  const result = await UserModel.create(data);
-  return result;
+const CreateUserInDB = async (data: TUser, session: any) => {
+  const result = await UserModel.create([data], { session });
+  return result[0]; // Since create() returns an array, return the first element.
 };
+
+
 const UpdateUserInDB = async (id: string, data: Partial<TUser>) => {
   try {
     // Extract other update data from the incoming data

@@ -33,11 +33,11 @@ export interface IPaymentDetails {
 }
 
 export interface IAddress {
-  street: string;
-  city: string;
-  state: string;
-  postalCode: string;
-  country: string;
+  street?: string;
+  city?: string;
+  state?: string;
+  postalCode?: string;
+  country?: string;
 }
 
 export interface IOrderItem {
@@ -46,9 +46,7 @@ export interface IOrderItem {
   price: number;
 }
 
-export interface TOrder extends Document {
-  productName: string;
-  categoryId: Types.ObjectId;
+export interface TOrder extends Document {  
   totalPrice: number;
   userID: Types.ObjectId;
   doneBy?: string;

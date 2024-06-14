@@ -43,11 +43,11 @@ const paymentDetailsValidation = z.object({
 
 // Address schema
 export const addressValidation = z.object({
-  street: z.string().min(1),
-  city: z.string().min(1),
-  state: z.string().min(1),
-  postalCode: z.string().min(1),
-  country: z.string().min(1),
+  street: z.string().min(1).optional(),
+  city: z.string().min(1).optional(),
+  state: z.string().min(1).optional(),
+  postalCode: z.string().min(1).optional(),
+  country: z.string().min(1).optional(),
 });
 
 // Order Item schema
@@ -59,8 +59,6 @@ const orderItemValidation = z.object({
 
 // Main Order schema
 const orderValidation = z.object({
-  productName: z.string().trim().min(1),
-  categoryId: objectIdValidation,
   totalPrice: z.number().min(0),
   orderDate: z.date().default(new Date()),
   deliveryDate: z.date().optional(),

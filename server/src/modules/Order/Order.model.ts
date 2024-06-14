@@ -141,6 +141,7 @@ const orderSchema = new Schema<TOrder>(
       type: String,
       required: true,
       enum: ['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'],
+      default: 'Pending',
     },
     orderDate: { type: Date, default: Date.now },
     deliveryDate: { type: Date },

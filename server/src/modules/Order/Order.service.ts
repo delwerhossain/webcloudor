@@ -2,9 +2,9 @@
 import { TOrder } from './Order.interface';
 import { OrderModel } from './Order.model';
 
-const createOrderInDB = async (order: TOrder | unknown) => {
-  const result = await OrderModel.create(order);
-  return result;
+const createOrderInDB = async (orderData: TOrder, session: any) => {
+  const order = new OrderModel(orderData);
+  return await order.save({ session });
 };
 
 const getAllOrdersInDB = async (

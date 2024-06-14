@@ -1,6 +1,12 @@
 const orderCreateExample = {    
     //! "totalPrice": 100, // auto created
    //! "userID": "60c72b2f9b1d8c1a8c8d1e2b",  // create user first auto updated in order
+   "userData":{
+    "name": "John Doe",
+    "email": "X5J2z@example.com",
+    "number": "1234567890",
+
+   },
     "doneBy": "delwer",
     "paymentDetails": [
       {
@@ -44,7 +50,6 @@ const orderCreateExample = {
       "country": "USA"
     },
     "status": "Pending",
-   //! "orderDate": "2024-06-10T00:00:00.000Z",
-  //!"deliveryDate": "2024-06-17T00:00:00.000Z"
-  }
-  
+   //! "orderDate": "2024-06-10T00:00:00.000Z",  auto create
+  //!"deliveryDate": "2024-06-17T00:00:00.000Z" auto create
+  } 

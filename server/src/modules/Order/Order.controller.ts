@@ -13,40 +13,42 @@ const CreateOrderAndUser = async (req: Request, res: Response, next: NextFunctio
   session.startTransaction();
   
   try {
-    const { productName , categoryId, name, email, number, address , orderDate, deliveryDate  } = req.body;
-    const userData = {
-      name: req.body.name,
-      email: req.body.email,
-      number: req.body.number,
-      address: req.body.address,
+    const {  userData ,billingAddress,paymentDetails,  orderItems    } = req.body;
+    const rowUserData = {
+      name : userData.name,
+      email : userData.email,
+      phoneNumber : userData.phoneNumber,
+      address : billingAddress
     };  
 
-    const orderData = req.body;
+    const rowOrderData = {
+      billingAddress,paymentDetails,  orderDate,orderItems 
+    }
 
     // Validate user data
-    const validatedUser = UserValidation.userValidation.parse(userData);
+    const validatedUser = UserValidation.userValidation.parse(rowUserData);
 
     // Check if user already exists
     let user = await UserModel.findOne({
-      $or: [{ email: validatedUser.email }, { number: validatedUser.number }],
+      $or: [{ email: validatedUser.email }, { phoneNumber: validatedUser.phoneNumber }],
     }).session(session);
 
     // If user doesn't exist, create a new one
     if (!user) {
-      user = await UserServices.createUserInDB(validatedUser, session);
+      user = await UserServices.CreateUserInDB(validatedUser, session);
     }
 
     // Validate order data
-    const validatedOrder = OrderValidation.createOrderSchemaValidation.parse(orderData);
+    const validatedOrder = OrderValidation.createOrderSchemaValidation.parse(rowOrderData);
 
     // Calculate durationInDays
-    const orderDate = new Date(validatedOrder.orderDate);
-    const deliveryDate = new Date(validatedOrder.deliveryDate);
-    const millisecondsInDay = 24 * 60 * 60 * 1000;
-    const durationInDays = Math.ceil((deliveryDate.getTime() - orderDate.getTime()) / millisecondsInDay);
+    // const orderDate = new Date(validatedOrder.orderDate);
+    // const deliveryDate = new Date(validatedOrder.deliveryDate);
+    // const millisecondsInDay = 24 * 60 * 60 * 1000;
+    // const durationInDays = Math.ceil((deliveryDate.getTime() - orderDate.getTime()) / millisecondsInDay);
 
-    validatedOrder.durationInDays = durationInDays;
-    validatedOrder.userID = user._id;
+    // validatedOrder.durationInDays = durationInDays;
+    // validatedOrder.userID = user._id;
 
     // Create order
     const order = await OrderServices.createOrderInDB(validatedOrder, session);
