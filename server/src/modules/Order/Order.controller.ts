@@ -6,56 +6,82 @@ import { UserModel } from '../User/User.model';
 import { UserValidation } from '../User/User.validation';
 import mongoose from 'mongoose';
 import { UserServices } from '../User/User.service';
+import { IOrderItem } from './Order.interface';
 
 //! CreateOrderAndUser will create both user and order, more work needed to be done
 const CreateOrderAndUser = async (req: Request, res: Response, next: NextFunction) => {
   const session = await mongoose.startSession();
   session.startTransaction();
-  
-  try {
-    const {  userData ,billingAddress,paymentDetails,  orderItems    } = req.body;
-    const rowUserData = {
-      name : userData.name,
-      email : userData.email,
-      phoneNumber : userData.phoneNumber,
-      address : billingAddress
-    };  
 
-    const rowOrderData = {
-      billingAddress,paymentDetails,  orderDate,orderItems 
-    }
+  try {
+    const {
+      userData,
+      billingAddress,
+      shippingAddress,
+      paymentDetails,
+      orderItems,
+    } = req.body;
+
+    const rowUserData = {
+      name: userData.name,
+      email: userData.email,
+      phoneNumber: userData.phoneNumber,
+    };
+
+    const totalAmount = orderItems.reduce(
+      (accumulator: number, currentValue: IOrderItem) =>
+        accumulator + currentValue.price * currentValue.quantity,
+      0,
+    );
 
     // Validate user data
     const validatedUser = UserValidation.userValidation.parse(rowUserData);
 
     // Check if user already exists
     let user = await UserModel.findOne({
-      $or: [{ email: validatedUser.email }, { phoneNumber: validatedUser.phoneNumber }],
+      $or: [
+        { email: validatedUser.email },
+        { phoneNumber: validatedUser.phoneNumber },
+      ],
     }).session(session);
 
     // If user doesn't exist, create a new one
     if (!user) {
+      if (billingAddress) {
+        validatedUser.billingAddress = billingAddress;
+      }
+      if (shippingAddress) {
+        validatedUser.shippingAddress = shippingAddress;
+      }
       user = await UserServices.CreateUserInDB(validatedUser, session);
+    } else {
+      // Update existing user's addresses if provided
+      const updateData: any = {};
+      if (billingAddress) {
+        updateData.billingAddress = billingAddress;
+      }
+      if (shippingAddress) {
+        updateData.shippingAddress = shippingAddress;
+      }
+      if (Object.keys(updateData).length > 0) {
+        await UserModel.updateOne({ _id: user._id }, { $set: updateData }, { session });
+      }
     }
+
+    const rowOrderData = {
+      userID: user._id,
+      totalAmount,
+      paymentDetails,
+      orderItems,
+      shippingAddress,
+      billingAddress,
+    };
 
     // Validate order data
     const validatedOrder = OrderValidation.createOrderSchemaValidation.parse(rowOrderData);
 
-    // Calculate durationInDays
-    // const orderDate = new Date(validatedOrder.orderDate);
-    // const deliveryDate = new Date(validatedOrder.deliveryDate);
-    // const millisecondsInDay = 24 * 60 * 60 * 1000;
-    // const durationInDays = Math.ceil((deliveryDate.getTime() - orderDate.getTime()) / millisecondsInDay);
-
-    // validatedOrder.durationInDays = durationInDays;
-    // validatedOrder.userID = user._id;
-
     // Create order
     const order = await OrderServices.createOrderInDB(validatedOrder, session);
-
-    // Update user's orderDetails
-    user.orderDetails.push({ orderID: order._id });
-    await user.save({ session });
 
     await session.commitTransaction();
     session.endSession();
@@ -128,7 +154,8 @@ const GetAllOrder = async (req: Request, res: Response, next: NextFunction) => {
     if (maxPrice)
       filter.price = { ...filter.price, $lte: parseFloat(maxPrice as string) };
     if (orderDate) filter.orderDate = { $gte: new Date(orderDate as string) };
-    if (deliveryDate) filter.deliveryDate = { $lte: new Date(deliveryDate as string) };
+    if (deliveryDate)
+      filter.deliveryDate = { $lte: new Date(deliveryDate as string) };
     if (userID) filter.userID = userID;
     if (doneBy) filter.doneBy = doneBy;
     if (durationInDays)
