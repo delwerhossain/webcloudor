@@ -69,8 +69,8 @@ const orderValidation = z.object({
   paymentDetails: z.array(paymentDetailsValidation),
   orderItems: z.array(orderItemValidation),
   totalAmount: z.number().min(0),
-  shippingAddress: addressValidation,
-  billingAddress: addressValidation,
+  shippingAddress: addressValidation.optional(),
+  billingAddress: addressValidation.optional(),
   status: z.enum(['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled']),
 });
 

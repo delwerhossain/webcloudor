@@ -4,7 +4,8 @@ import { IAddress } from '../Order/Order.interface';
 export type TUser = {
   userType?: 'superAdmin' | 'admin' | 'user';
   name: string;
-  email: string;
+  email?: string;
   phoneNumber: string;
-  address: IAddress;
+  shippingAddress?: IAddress;
+  billingAddress?: IAddress;
 };

@@ -55,8 +55,8 @@ export interface TOrder extends Document {
   description?: string;
   orderItems: IOrderItem[];
   totalAmount: number;
-  shippingAddress: IAddress;
-  billingAddress: IAddress;
+  shippingAddress?: IAddress;
+  billingAddress?: IAddress;
   status: 'Pending' | 'Processing' | 'Shipped' | 'Delivered' | 'Cancelled';
   orderDate: Date;
   deliveryDate?: Date;

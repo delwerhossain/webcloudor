@@ -13,10 +13,11 @@ const user = z.object({
       phoneRegex,
       'Invalid phone number format. It should be a 10-digit number.',
     ),
-  address: addressValidation,
+  shippingAddress: addressValidation.optional(),
+  billingAddress: addressValidation.optional(),
 });
 
-const userValidation = user
+const userValidation = user;
 const userUpdateValidation = user.partial();
 export const UserValidation = {
   userValidation,

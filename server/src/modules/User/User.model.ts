@@ -27,7 +27,8 @@ const UserSchema = new Schema<TUser>({
     trim: true,
     required: [true, 'Number Required'],
   },
-  address: [AddressSchema],
+  shippingAddress: [AddressSchema],
+  billingAddress: [AddressSchema],
 }, { timestamps: true });
 
 export const UserModel = model<TUser>('user', UserSchema);

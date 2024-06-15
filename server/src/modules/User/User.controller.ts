@@ -59,8 +59,16 @@ const GetAllUsers = async (req: Request, res: Response, next: NextFunction) => {
 
 const CreateUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const data = req.body;
-    const ZodValidation = UserValidation.userValidation.parse(data);
+    const { name, email, phoneNumber, shippingAddress, billingAddress } =
+      req.body;
+    const data:TUser = {
+      name,
+      email,
+      phoneNumber,
+      shippingAddress,
+      billingAddress,
+    };
+    const ZodValidation:TUser = UserValidation.userValidation.parse(data);
     const result = await UserServices.CreateUserInDB(ZodValidation);
     res.status(201).json({
       success: true,
