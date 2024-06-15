@@ -47,6 +47,9 @@ const CreateOrderAndUser = async (req: Request, res: Response, next: NextFunctio
       ],
     }).session(session);
 
+    let newUser = false;
+    let newOrder = false;
+
     // If user doesn't exist, create a new one
     if (!user) {
       if (billingAddress) {
@@ -56,6 +59,7 @@ const CreateOrderAndUser = async (req: Request, res: Response, next: NextFunctio
         validatedUser.shippingAddress = shippingAddress;
       }
       user = await UserServices.CreateUserInDB(validatedUser, session);
+      newUser = true;
     } else {
       // Update existing user's addresses if provided
       const updateData: any = {};
@@ -86,13 +90,21 @@ const CreateOrderAndUser = async (req: Request, res: Response, next: NextFunctio
 
     // Create order
     const order = await OrderServices.createOrderInDB(validatedOrder, session);
+    newOrder = true;
 
     await session.commitTransaction();
     session.endSession();
 
     res.status(201).json({
       success: true,
-      message: 'User and order created successfully',
+      newUser,
+      newOrder,
+      // Return custom message based on creation of user and order 
+      message: newUser && newOrder
+        ? 'New user and order created successfully'
+        : newOrder
+        ? 'Order created successfully for existing user'
+        : 'User and order updated successfully',
       data: { user, order },
     });
   } catch (err) {
@@ -100,7 +112,7 @@ const CreateOrderAndUser = async (req: Request, res: Response, next: NextFunctio
     session.endSession();
     next(err);
   }
-}
+};
 
 
 const CreateOrder = async (req: Request, res: Response, next: NextFunction) => {

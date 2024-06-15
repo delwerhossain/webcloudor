@@ -6,20 +6,17 @@ import { TUser } from './User.interface';
 const UserSchema = new Schema<TUser>({
   userType: {
     type: String,
-    enum: {
-      values: ["superAdmin",'admin', 'user'],
-      default: 'user',
-    }
+    enum: ["superAdmin", 'admin', 'user'],
+    default: 'user', // Ensures the default value is 'user'
   },
   name: {
-    type: String,    
+    type: String,
     trim: true,
     required: [true, 'User Name Required'],
   },
   email: {
     type: String,
     trim: true,
-    required: [true, 'Email Required'],
   },
   phoneNumber: {
     type: String,
@@ -30,5 +27,6 @@ const UserSchema = new Schema<TUser>({
   shippingAddress: [AddressSchema],
   billingAddress: [AddressSchema],
 }, { timestamps: true });
+
 
 export const UserModel = model<TUser>('user', UserSchema);
