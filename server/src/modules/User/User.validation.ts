@@ -15,6 +15,7 @@ const user = z.object({
     ).min(10).max(15),
   shippingAddress: addressValidation.optional(),
   billingAddress: addressValidation.optional(),
+  password: z.string().trim().min(1),
 });
 
 const userValidation = user;

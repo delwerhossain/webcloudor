@@ -26,6 +26,10 @@ const UserSchema = new Schema<TUser>({
   },
   shippingAddress: [AddressSchema],
   billingAddress: [AddressSchema],
+  password: {
+    type: String,
+    trim: true,
+  }
 }, { timestamps: true });
 
 

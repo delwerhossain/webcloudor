@@ -2,7 +2,7 @@ import { Schema, model } from 'mongoose';
 import { TReview, TReviewDetails } from './Review.interface';
 
 
-const reviewDetailsSchema = new Schema<TReviewDetails>({
+const ReviewDetailsSchema = new Schema<TReviewDetails>({
   userID: {
     type: Schema.Types.ObjectId,
     ref: 'User',
@@ -36,7 +36,7 @@ const ReviewSchema = new Schema<TReview>({
     required: [true, 'Product Id required'],
   },
   reviewDetails: {
-    type: [reviewDetailsSchema],
+    type: [ReviewDetailsSchema],
     default: []
   }
 }, { timestamps: true });

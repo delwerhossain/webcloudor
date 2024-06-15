@@ -8,4 +8,5 @@ export type TUser = {
   phoneNumber: string;
   shippingAddress?: IAddress;
   billingAddress?: IAddress;
+  password?: string;
 };
