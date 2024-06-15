@@ -3,9 +3,9 @@ import { addressValidation } from '../Order/Order.validation';
 const phoneRegex = /^(\+?\d{1,4}[\s-]?)?(\(?\d{3}\)?[\s-]?)?[\d\s-]{7,10}$/;
 
 const user = z.object({
-  userType: z.enum(['superAdmin', 'admin', 'user']),
+  userType: z.enum(['superAdmin', 'admin', 'user']).optional(),
   name: z.string().trim().min(1),
-  email: z.string().trim().min(1),
+  email: z.string().trim().min(1).optional(),
   phoneNumber: z
     .string()
     .trim()

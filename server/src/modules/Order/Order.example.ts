@@ -1,5 +1,5 @@
 const orderCreateExample = {    
-    //! "totalPrice": 100, // auto created
+    //! "totalAmount": 100, // auto created
    //! "userID": "60c72b2f9b1d8c1a8c8d1e2b",  // create user first auto updated in order
    "userData":{
     "name": "John Doe",
@@ -49,7 +49,7 @@ const orderCreateExample = {
       "postalCode": "12345",
       "country": "USA"
     },
-    "status": "Pending",
+    //! "status": "Pending",  auto create  need to secure 
    //! "orderDate": "2024-06-10T00:00:00.000Z",  auto create
   //!"deliveryDate": "2024-06-17T00:00:00.000Z" auto create
   } 

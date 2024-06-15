@@ -47,7 +47,6 @@ export interface IOrderItem {
 }
 
 export interface TOrder extends Document {  
-  totalPrice: number;
   userID: Types.ObjectId;
   doneBy?: string;
   paymentDetails: IPaymentDetails[];

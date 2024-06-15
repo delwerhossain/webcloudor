@@ -123,7 +123,6 @@ const orderSchema = new Schema<TOrder>(
       ref: 'User',
       required: true,
     },
-    totalPrice: { type: Number, required: [true, 'Price is required'] },
     doneBy: {
       type: String,
       trim: true,
@@ -134,7 +133,7 @@ const orderSchema = new Schema<TOrder>(
     },
     description: { type: String, trim: true },
     orderItems: [OrderItemSchema],
-    totalAmount: { type: Number, required: true },
+    totalAmount: { type: Number, required: [true, 'Total Amount is required'] },
     shippingAddress: AddressSchema,
     billingAddress: AddressSchema,
     status: {

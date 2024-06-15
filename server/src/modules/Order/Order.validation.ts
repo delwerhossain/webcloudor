@@ -59,7 +59,7 @@ const orderItemValidation = z.object({
 
 // Main Order schema
 const orderValidation = z.object({
-  totalPrice: z.number().min(0),
+  totalAmount: z.number().min(0),
   orderDate: z.date().default(new Date()),
   deliveryDate: z.date().optional(),
   userID: objectIdValidation.optional(),
@@ -68,10 +68,9 @@ const orderValidation = z.object({
   description: z.string().optional(),
   paymentDetails: z.array(paymentDetailsValidation),
   orderItems: z.array(orderItemValidation),
-  totalAmount: z.number().min(0),
   shippingAddress: addressValidation.optional(),
   billingAddress: addressValidation.optional(),
-  status: z.enum(['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled']),
+  status: z.enum(['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled']).default('Pending'),
 });
 
 const createOrderSchemaValidation = orderValidation;

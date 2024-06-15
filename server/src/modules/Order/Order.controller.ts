@@ -20,6 +20,8 @@ const CreateOrderAndUser = async (req: Request, res: Response, next: NextFunctio
       shippingAddress,
       paymentDetails,
       orderItems,
+      description,
+      doneBy,
     } = req.body;
 
     const rowUserData = {
@@ -69,12 +71,14 @@ const CreateOrderAndUser = async (req: Request, res: Response, next: NextFunctio
     }
 
     const rowOrderData = {
-      userID: user._id,
+      userID: user._id.toString(), // Convert ObjectId to string
       totalAmount,
       paymentDetails,
       orderItems,
       shippingAddress,
       billingAddress,
+      description,
+      doneBy,
     };
 
     // Validate order data
@@ -96,7 +100,7 @@ const CreateOrderAndUser = async (req: Request, res: Response, next: NextFunctio
     session.endSession();
     next(err);
   }
-};
+}
 
 
 const CreateOrder = async (req: Request, res: Response, next: NextFunction) => {
