@@ -28,6 +28,8 @@ const CreateOrderAndUser = async (req: Request, res: Response, next: NextFunctio
       name: userData.name,
       email: userData.email,
       phoneNumber: userData.phoneNumber,
+      occupationType: userData?.occupationType,
+      occupationDescription: userData?.occupationDescription,
     };
 
     const totalAmount = orderItems.reduce(

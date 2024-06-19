@@ -5,6 +5,8 @@ const orderCreateExample = {
     "name": "John Doe",
     "email": "X5J2z@example.com",
     "number": "1234567890",
+    "occupationType": "Business Owner",
+    "occupationDescription": "We are a company.",
 
    },
     "doneBy": "delwer",

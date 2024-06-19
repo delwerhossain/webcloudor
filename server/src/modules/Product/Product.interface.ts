@@ -11,6 +11,7 @@ export interface TReviewDetails {
 export interface TProduct {
   name: string;
   price: number;
+  liveLink: string;
   description: string;
   image: string;
   categoryID: Types.ObjectId;

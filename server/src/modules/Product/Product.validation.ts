@@ -28,6 +28,7 @@ const productCreateValidation = z.object({
 const productUpdateValidation = z.object({
   name: z.string().trim().min(1),
   price: z.number().nonnegative({ message: 'Price must be a non-negative number' }),
+  liveLink: z.string().trim().min(1),
   description: z.string().trim().min(1),
   image: z.string().trim().min(1),
   categoryID: ObjectIdSchema.refine(id => Types.ObjectId.isValid(id), { message: 'Invalid Category ID' }),

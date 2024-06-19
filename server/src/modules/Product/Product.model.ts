@@ -37,6 +37,10 @@ const ProductSchema = new Schema<TProduct>({
     type: Number,
     required: [true, 'Price Required'],
   },
+  liveLink: {
+    type: String,
+    trim: true,
+  },
   description: {
     type: String,
     trim: true,
