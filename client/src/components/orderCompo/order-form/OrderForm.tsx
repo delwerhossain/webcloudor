@@ -1,28 +1,19 @@
 "use client";
-import { FC, FormEvent, useState } from "react";
+import {  FormEvent,  } from "react";
 
-const OrderForm: FC = () => {
-  // state
-  const [orderData, setOrderData] = useState({
-    fullName: "",
-    address: "",
-    email: "",
-    phoneNumber: 0,
-    occupation: "",
-    description: "",
-  });
-
+const OrderForm = ({ orderData, setOrderData }) => {
   const orderSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    const { fullName, address, email, phoneNumber, occupation, description } = e.target as typeof e.target & {
-      fullName: { value: string };
-      address: { value: string };
-      email: { value: string };
-      phoneNumber: { value: string };
-      occupation: { value: string };
-      description: { value: string };
-    };
+    const { fullName, address, email, phoneNumber, occupation, description } =
+      e.target as typeof e.target & {
+        fullName: { value: string };
+        address: { value: string };
+        email: { value: string };
+        phoneNumber: { value: string };
+        occupation: { value: string };
+        description: { value: string };
+      };
 
     const updatedOrderData = {
       fullName: fullName.value,
@@ -98,7 +89,6 @@ const OrderForm: FC = () => {
           <select
             id="occupation"
             name="occupation"
-            required
             defaultValue=""
             className="focus:border-gray-400 focus:border border border-gray-300 rounded-lg py-4 px-6 text-center font-semibold w-full selection:border-indigo-300 focus:ring-blue-500"
           >
@@ -117,7 +107,7 @@ const OrderForm: FC = () => {
             id="description"
             name="description"
             placeholder="Description of your occupation"
-            className="focus:border-gray-400 focus:border border border-gray-300 rounded-lg py-4 px-6 text-center font-semibold w-full selection:border-indigo-300 focus:ring-blue-500"
+            className=" focus:border-gray-400 focus:border border border-gray-300 rounded-lg py-4 px-6 text-left font-semibold w-full selection:border-indigo-300 focus:ring-blue-500"
             rows="4"
           />
         </div>

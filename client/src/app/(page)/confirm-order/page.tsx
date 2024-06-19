@@ -2,13 +2,37 @@
 import OrderForm from "@/components/orderCompo/order-form/OrderForm";
 import Image from "next/image";
 import { useSearchParams } from "next/navigation";
+import { useState } from "react";
+
+interface OrderData {
+  fullName: string;
+  address: string;
+  email: string;
+  phoneNumber: number; // Use string if you want to handle phone number as a string
+  occupation: string;
+  description: string;
+}
+const loader = () => {
+  return (
+    <div>
+     
+    </div>
+  );
+};
 
 const page = () => {
-  // get url query form data
-  const searchParams = useSearchParams();
+  const [orderData, setOrderData] = useState<OrderData>({
+    fullName: "",
+    address: "",
+    email: "",
+    phoneNumber: 0,
+    occupation: "",
+    description: "",
+  });
 
-  const themeID = searchParams.get("theme");
-  console.log({ themeID });
+  // get url query form data
+  const themeID = useSearchParams().get("theme");
+
   // Get the current date
   const date = new Date();
 
@@ -96,8 +120,9 @@ const page = () => {
                         <h2 className="font-semibold text-xl leading-8 text-black mb-3">
                           Premium Personal Website
                         </h2>
-                        <p className="font-normal text-lg leading-8 text-gray-500 mb-3 ">
-                          Theme ID: {themeID ? themeID : "loading..."}
+                        <p className="font-normal text-lg leading-8 text-gray-500 mb-3 flex gap-3 items-center  ">
+                         <span> Theme ID:  </span>
+                         {themeID ? themeID :   <span className="bg-gray-300 w-20 h-4 rounded animate-pulse" ></span>}
                         </p>
                         {/* <div className="flex items-center ">
                           <p className="font-medium text-base leading-7 text-black pr-4 mr-4 border-r border-gray-200">
@@ -116,7 +141,7 @@ const page = () => {
                             Discount Price
                           </p>
                           <div className="lg:mt-4 font-medium text-sm leading-7 text-indigo-600">
-                          <s>৳2000</s> ৳1499
+                            <s>৳2000</s> ৳1499
                           </div>
                         </div>
                       </div>
@@ -146,7 +171,7 @@ const page = () => {
               </div>
 
               <div className="flex-col lg:flex-row items-center py-6 gap-6 w-full">
-                <OrderForm />
+                <OrderForm orderData={orderData} setOrderData={setOrderData} />
               </div>
             </div>
             <div className="w-full border-t border-gray-200 px-6 flex flex-col lg:flex-row items-center justify-between ">
