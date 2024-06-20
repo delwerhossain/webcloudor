@@ -15,6 +15,7 @@ const UserSchema = new Schema<TUser>(
       required: [true, 'User Name Required'],
     },
     occupationType: {
+      type: String,
       enum: [
         'Business Owner',
         'Job Holder',
@@ -42,7 +43,6 @@ const UserSchema = new Schema<TUser>(
     billingAddress: [AddressSchema],
     password: {
       type: String,
-      trim: true,
     },
   },
   { timestamps: true },

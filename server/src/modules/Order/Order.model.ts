@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { Schema, model } from 'mongoose';
 import {
   TOrder,
@@ -5,6 +6,7 @@ import {
   IAddress,
   IOrderItem,
 } from './Order.interface';
+import { OrderValidation } from './Order.validation';
 
 // Define the PaymentDetails sub-schema
 const PaymentDetailsSchema = new Schema<IPaymentDetails>({
@@ -51,6 +53,8 @@ const PaymentDetailsSchema = new Schema<IPaymentDetails>({
     },
     transactionId: {
       type: String,
+      unique: true,
+      trim: true,
       required: function () {
         return ['Bkash', 'Rocket', 'Nagad', 'Upay'].includes(this.paymentType);
       },
@@ -77,8 +81,10 @@ const PaymentDetailsSchema = new Schema<IPaymentDetails>({
     },
   },
   sslCommerzDetails: {
-    transactionId: {
+    transactionId: {    
       type: String,
+      unique: true,
+      trim: true,
       required: function () {
         return this.paymentType === 'SSLCOMMERZ';
       },
@@ -98,6 +104,10 @@ const PaymentDetailsSchema = new Schema<IPaymentDetails>({
     default: 'Pending',
   },
 });
+
+// Ensure unique index for transactionId fields
+PaymentDetailsSchema.index({ 'mobileWalletDetails.transactionId': 1 }, { unique: true });
+PaymentDetailsSchema.index({ 'sslCommerzDetails.transactionId': 1 }, { unique: true });
 
 // Define the Address sub-schema
 export const AddressSchema = new Schema<IAddress>({
@@ -148,4 +158,26 @@ const orderSchema = new Schema<TOrder>(
   { timestamps: true },
 );
 
+
+// Middleware to validate data using Zod before saving or updating
+// orderSchema.pre('save', async function (next) {
+//   try {
+//     await OrderValidation.createOrderSchemaValidation.parseAsync(this.toObject());
+//     next();
+//   } catch (error: any) {
+//     next(error);
+//   }
+// });
+
+// orderSchema.pre('findOneAndUpdate', async function (next) {
+//   try {
+//     await OrderValidation.updateOrderSchemaValidation.parseAsync(this.getUpdate());
+//     next();
+//   } catch (error: any) {
+//     next(error);
+//   }
+// });
+
+
 export const OrderModel = model<TOrder>('Order', orderSchema);
+

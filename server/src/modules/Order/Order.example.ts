@@ -9,7 +9,7 @@ const orderCreateExample = {
     "occupationDescription": "We are a company.",
 
    },
-    "doneBy": "delwer",
+    // "doneBy": "delwer", after create the order admin will be able to update it 
     "paymentDetails": [
       {
         "paymentType": "Card",
