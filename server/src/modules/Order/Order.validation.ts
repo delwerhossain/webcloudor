@@ -50,6 +50,7 @@ const paymentDetailsValidation = z.object({
     'Upay',
     'Bank',
     'SSLCOMMERZ',
+    'COD',
   ]),
   cardDetails: cardDetailsValidation,
   mobileWalletDetails: mobileWalletDetailsValidation,

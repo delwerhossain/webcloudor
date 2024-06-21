@@ -19,6 +19,7 @@ const PaymentDetailsSchema = new Schema<IPaymentDetails>({
       'Upay',
       'Bank',
       'SSLCOMMERZ',
+      'COD', // Add COD option here
     ],
     required: true,
   },
@@ -97,7 +98,9 @@ const PaymentDetailsSchema = new Schema<IPaymentDetails>({
   status: {
     type: String,
     enum: ['Pending', 'Success', 'Failed'],
-    default: 'Pending',
+    default: function () {
+      return this.paymentType === 'COD' ? 'Pending' : 'Pending';
+    },
   },
 });
 
@@ -165,23 +168,5 @@ const orderSchema = new Schema<TOrder>(
   { timestamps: true },
 );
 
-// Middleware to validate data using Zod before saving or updating
-// orderSchema.pre('save', async function (next) {
-//   try {
-//     await OrderValidation.createOrderSchemaValidation.parseAsync(this.toObject());
-//     next();
-//   } catch (error: any) {
-//     next(error);
-//   }
-// });
-
-// orderSchema.pre('findOneAndUpdate', async function (next) {
-//   try {
-//     await OrderValidation.updateOrderSchemaValidation.parseAsync(this.getUpdate());
-//     next();
-//   } catch (error: any) {
-//     next(error);
-//   }
-// });
 
 export const OrderModel = model<TOrder>('Order', orderSchema);

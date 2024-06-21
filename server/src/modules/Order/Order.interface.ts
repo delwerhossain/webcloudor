@@ -30,7 +30,8 @@ export interface IPaymentDetails {
     | 'Nagad'
     | 'Upay'
     | 'Bank'
-    | 'SSLCOMMERZ';
+    | 'SSLCOMMERZ'
+    | 'COD';
   cardDetails?: ICardDetails;
   mobileWalletDetails?: IMobileWalletDetails;
   bankDetails?: IBankDetails;
