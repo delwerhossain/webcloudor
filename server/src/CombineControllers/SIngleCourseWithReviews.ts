@@ -18,7 +18,7 @@ const GetSingleOrderWithReviews = async (
         success: true,
         statusCode: 200,
         message: 'Order retrieved successfully',
-        data: { order:result, reviews: reviews },
+        data: { order: result, reviews: reviews },
       });
     }
   } catch (err) {

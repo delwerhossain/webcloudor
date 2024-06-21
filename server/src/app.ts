@@ -1,7 +1,7 @@
 /* eslint-disable no-unused-expressions */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import cors from 'cors';
-import express, {  Request, Response } from 'express';
+import express, { Request, Response } from 'express';
 import { CategoryRoutes } from './modules/Category/Category.routes';
 import { ReviewRoutes } from './modules/Review/Review.routes';
 import { OrderRoutes } from './modules/Order/Order.routes';
@@ -12,7 +12,6 @@ const app = express();
 //parsers
 app.use(express.json());
 
-
 app.use(cors());
 
 app.use('/api/orders', OrderRoutes);
@@ -22,7 +21,7 @@ app.use('/api/categories', CategoryRoutes);
 app.use('/api/reviews', ReviewRoutes);
 
 app.get('/', (req: Request, res: Response) => {
-  res.send('SERVER RUNNING!'); 
+  res.send('SERVER RUNNING!');
 });
 
 // eslint-disable-next-line no-unused-vars, @typescript-eslint/no-unused-vars
@@ -76,7 +75,7 @@ app.get('/', (req: Request, res: Response) => {
 // });
 
 // new error handelar
-app.use(globalErrorHandler)
+app.use(globalErrorHandler);
 //Not Found
 app.use(notFound);
 

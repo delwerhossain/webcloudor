@@ -119,5 +119,5 @@ export const CategoryControllers = {
   GetAllCategories,
   CreateCategory,
   GetSingleCategory,
-  UpdateCategory
+  UpdateCategory,
 };

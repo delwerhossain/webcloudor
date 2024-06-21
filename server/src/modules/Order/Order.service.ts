@@ -35,7 +35,7 @@ const getSingleOrderInDB = async (id: string) => {
 const updateOrderInDB = async (id: string, data: Partial<TOrder>) => {
   try {
     // Extract other update data from the incoming data
-    const {...updateData } = data;
+    const { ...updateData } = data;
 
     // Fetch the existing order
     const existingOrder = await OrderModel.findById(id);

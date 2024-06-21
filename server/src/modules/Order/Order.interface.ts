@@ -22,7 +22,15 @@ export interface ISSLCOMMERZDetails {
 }
 
 export interface IPaymentDetails {
-  paymentType: 'Cash' | 'Card' | 'Bkash' | 'Rocket' | 'Nagad' | 'Upay' | 'Bank' | 'SSLCOMMERZ';
+  paymentType:
+    | 'Cash'
+    | 'Card'
+    | 'Bkash'
+    | 'Rocket'
+    | 'Nagad'
+    | 'Upay'
+    | 'Bank'
+    | 'SSLCOMMERZ';
   cardDetails?: ICardDetails;
   mobileWalletDetails?: IMobileWalletDetails;
   bankDetails?: IBankDetails;
@@ -46,7 +54,7 @@ export interface IOrderItem {
   price: number;
 }
 
-export interface TOrder extends Document {  
+export interface TOrder extends Document {
   userID: Types.ObjectId;
   doneBy?: string;
   paymentDetails: IPaymentDetails[];

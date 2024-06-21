@@ -1,7 +1,6 @@
 import { Schema, model } from 'mongoose';
 import { TReview, TReviewDetails } from './Review.interface';
 
-
 const ReviewDetailsSchema = new Schema<TReviewDetails>({
   userID: {
     type: Schema.Types.ObjectId,
@@ -10,7 +9,7 @@ const ReviewDetailsSchema = new Schema<TReviewDetails>({
   },
   orderID: {
     type: Schema.Types.ObjectId,
-    ref: 'order',    
+    ref: 'order',
   },
   rating: {
     type: Number,
@@ -26,19 +25,22 @@ const ReviewDetailsSchema = new Schema<TReviewDetails>({
   date: {
     type: Date,
     default: Date.now,
-  }
+  },
 });
 
-const ReviewSchema = new Schema<TReview>({
-  productID: {
-    type: Schema.Types.ObjectId,
-    ref: 'product',
-    required: [true, 'Product Id required'],
+const ReviewSchema = new Schema<TReview>(
+  {
+    productID: {
+      type: Schema.Types.ObjectId,
+      ref: 'product',
+      required: [true, 'Product Id required'],
+    },
+    reviewDetails: {
+      type: [ReviewDetailsSchema],
+      default: [],
+    },
   },
-  reviewDetails: {
-    type: [ReviewDetailsSchema],
-    default: []
-  }
-}, { timestamps: true });
+  { timestamps: true },
+);
 
 export const ReviewModel = model<TReview>('review', ReviewSchema);

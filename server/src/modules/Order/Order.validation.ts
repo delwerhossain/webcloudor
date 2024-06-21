@@ -5,35 +5,52 @@ import { Types } from 'mongoose';
 const isValidObjectId = (id: string) => Types.ObjectId.isValid(id);
 
 const objectIdValidation = z.string().refine(isValidObjectId, {
-  message: "Invalid ObjectId format",
+  message: 'Invalid ObjectId format',
 });
 
-// 
+//
 
 // Payment Details schema
-const cardDetailsValidation = z.object({
-  cardNumber: z.string().min(1),
-  cardHolderName: z.string().min(1),
-  expiryDate: z.string().min(1),
-}).optional();
+const cardDetailsValidation = z
+  .object({
+    cardNumber: z.string().min(1),
+    cardHolderName: z.string().min(1),
+    expiryDate: z.string().min(1),
+  })
+  .optional();
 
-const mobileWalletDetailsValidation = z.object({
-  walletNumber: z.string().min(1),
-  transactionId: z.string().min(1),
-}).optional();
+const mobileWalletDetailsValidation = z
+  .object({
+    walletNumber: z.string().min(1),
+    transactionId: z.string().min(1),
+  })
+  .optional();
 
-const bankDetailsValidation = z.object({
-  accountNumber: z.string().min(1),
-  bankName: z.string().min(1),
-  accountHolderName: z.string().min(1),
-}).optional();
+const bankDetailsValidation = z
+  .object({
+    accountNumber: z.string().min(1),
+    bankName: z.string().min(1),
+    accountHolderName: z.string().min(1),
+  })
+  .optional();
 
-const sslCommerzDetailsValidation = z.object({
-  transactionId: z.string().min(1),
-}).optional();
+const sslCommerzDetailsValidation = z
+  .object({
+    transactionId: z.string().min(1),
+  })
+  .optional();
 
 const paymentDetailsValidation = z.object({
-  paymentType: z.enum(['Cash', 'Card', 'Bkash', 'Rocket', 'Nagad', 'Upay', 'Bank', 'SSLCOMMERZ']),
+  paymentType: z.enum([
+    'Cash',
+    'Card',
+    'Bkash',
+    'Rocket',
+    'Nagad',
+    'Upay',
+    'Bank',
+    'SSLCOMMERZ',
+  ]),
   cardDetails: cardDetailsValidation,
   mobileWalletDetails: mobileWalletDetailsValidation,
   bankDetails: bankDetailsValidation,
@@ -72,7 +89,9 @@ const orderValidation = z.object({
   orderItems: z.array(orderItemValidation),
   shippingAddress: addressValidation.optional(),
   billingAddress: addressValidation.optional(),
-  status: z.enum(['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled']).default('Pending'),
+  status: z
+    .enum(['Pending', 'Processing', 'Shipped', 'Delivered', 'Cancelled'])
+    .default('Pending'),
 });
 
 const createOrderSchemaValidation = orderValidation;

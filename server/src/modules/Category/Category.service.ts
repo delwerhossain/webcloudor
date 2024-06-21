@@ -6,10 +6,10 @@ const CreateCategoryInDB = async (data: TCategory) => {
   const result = await CategoryModel.create(data);
   return result;
 };
-const UpdateCategoryInDB = async(id: string, data: Partial<TCategory>) => {
+const UpdateCategoryInDB = async (id: string, data: Partial<TCategory>) => {
   try {
     // Extract other update data from the incoming data
-    const {...updateData } = data;
+    const { ...updateData } = data;
 
     // Fetch the existing category
     const existingCategory = await CategoryModel.findById(id);

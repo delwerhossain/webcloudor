@@ -2,7 +2,7 @@ import { Types } from 'mongoose';
 
 export type TReview = {
   productID: Types.ObjectId;
-  reviewDetails: TReviewDetails[]
+  reviewDetails: TReviewDetails[];
 };
 
 export type TReviewDetails = {
@@ -11,4 +11,4 @@ export type TReviewDetails = {
   rating: number;
   comment: string;
   date: Date;
-}
+};

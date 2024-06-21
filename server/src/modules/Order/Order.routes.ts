@@ -2,7 +2,6 @@ import { Router } from 'express';
 import { OrderControllers } from './Order.controller';
 // import { CombineOrderReview } from '../../CombineControllers/SIngleCourseWithReviews';
 
-
 const router = Router();
 
 router.patch('/:orderID', OrderControllers.updateOrder);
@@ -17,7 +16,5 @@ router.get('/:orderID', OrderControllers.GetSingleOrder);
 
 //* order id neVER be deleted
 // router.delete('/:orderID', OrderControllers.deleteOrder);
-
-
 
 export const OrderRoutes = router;

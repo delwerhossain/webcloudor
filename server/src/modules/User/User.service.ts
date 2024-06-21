@@ -8,11 +8,10 @@ const CreateUserInDB = async (data: TUser, session: any) => {
   return result[0]; // Since create() returns an array, return the first element.
 };
 
-
 const UpdateUserInDB = async (id: string, data: Partial<TUser>) => {
   try {
     // Extract other update data from the incoming data
-    const {...updateData } = data;
+    const { ...updateData } = data;
 
     // Fetch the existing user
     const existingUser = await UserModel.findById(id);

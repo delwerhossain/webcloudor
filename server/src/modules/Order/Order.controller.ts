@@ -175,7 +175,10 @@ const GetAllOrder = async (req: Request, res: Response, next: NextFunction) => {
     const filter: any = {};
     if (minPrice) filter.totalAmount = { $gte: parseFloat(minPrice as string) };
     if (maxPrice)
-      filter.totalAmount = { ...filter.totalAmount, $lte: parseFloat(maxPrice as string) };
+      filter.totalAmount = {
+        ...filter.totalAmount,
+        $lte: parseFloat(maxPrice as string),
+      };
     if (orderDate) filter.orderDate = { $gte: new Date(orderDate as string) };
     if (deliveryDate)
       filter.deliveryDate = { $lte: new Date(deliveryDate as string) };
@@ -238,8 +241,6 @@ const GetSingleOrder = async (
     next(err);
   }
 };
-
-
 
 const deleteOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
