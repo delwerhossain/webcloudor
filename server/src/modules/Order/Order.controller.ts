@@ -9,7 +9,11 @@ import { UserServices } from '../User/User.service';
 import { IOrderItem } from './Order.interface';
 
 //! CreateOrderAndUser will create both user and order, more work needed to be done
-const CreateOrderAndUser = async (req: Request, res: Response, next: NextFunction) => {
+const CreateOrderAndUser = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
   const session = await mongoose.startSession();
   session.startTransaction();
 
@@ -23,7 +27,7 @@ const CreateOrderAndUser = async (req: Request, res: Response, next: NextFunctio
       description,
       doneBy,
     } = req.body;
-
+    console.log(req.body);
     const rowUserData = {
       name: userData.name,
       email: userData.email,
@@ -72,7 +76,11 @@ const CreateOrderAndUser = async (req: Request, res: Response, next: NextFunctio
         updateData.shippingAddress = shippingAddress;
       }
       if (Object.keys(updateData).length > 0) {
-        await UserModel.updateOne({ _id: user._id }, { $set: updateData }, { session });
+        await UserModel.updateOne(
+          { _id: user._id },
+          { $set: updateData },
+          { session },
+        );
       }
     }
 
@@ -88,25 +96,26 @@ const CreateOrderAndUser = async (req: Request, res: Response, next: NextFunctio
     };
 
     // Validate order data
-    const validatedOrder = OrderValidation.createOrderSchemaValidation.parse(rowOrderData);
+    const validatedOrder =
+      OrderValidation.createOrderSchemaValidation.parse(rowOrderData);
 
     // Create order
     const order = await OrderServices.createOrderInDB(validatedOrder, session);
+    // IF successfully order create then newOrder will be true
     newOrder = true;
-
     await session.commitTransaction();
     session.endSession();
-
     res.status(201).json({
       success: true,
       newUser,
       newOrder,
-      // Return custom message based on creation of user and order 
-      message: newUser && newOrder
-        ? 'New user and order created successfully'
-        : newOrder
-        ? 'Order created successfully for existing user'
-        : 'User and order updated successfully',
+      // Return custom message based on creation of user and order
+      message:
+        newUser && newOrder
+          ? 'New user and order created successfully'
+          : newOrder
+            ? 'Order created successfully for existing user'
+            : 'User and order updated successfully',
       data: { user, order },
     });
   } catch (err) {
@@ -116,7 +125,6 @@ const CreateOrderAndUser = async (req: Request, res: Response, next: NextFunctio
   }
 };
 
-
 const CreateOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const order = req.body;
@@ -124,10 +132,10 @@ const CreateOrder = async (req: Request, res: Response, next: NextFunction) => {
       OrderValidation.createOrderSchemaValidation.parse(order);
     //! todo need to fix date time count
     const orderDate = new Date(ZodValidation.orderDate);
-    const deliveryDate = new Date(ZodValidation.deliveryDate);
+    const deliveryDate = new Date(ZodValidation?.deliveryDate);
     const millisecondsInDay = 24 * 60 * 60 * 1000;
     const durationInDays = Math.ceil(
-      (deliveryDate.getTime() - orderDate.getTime()) / millisecondsInDay,
+      (deliveryDate?.getTime() - orderDate.getTime()) / millisecondsInDay,
     );
 
     ZodValidation.durationInDays = durationInDays;
@@ -143,7 +151,6 @@ const CreateOrder = async (req: Request, res: Response, next: NextFunction) => {
     next(err);
   }
 };
-
 const GetAllOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const {
@@ -158,8 +165,7 @@ const GetAllOrder = async (req: Request, res: Response, next: NextFunction) => {
       userID,
       doneBy,
       durationInDays,
-      productName, // new
-      categoryId, // new
+      productId,
     } = req.query;
 
     const pageNumber = Array.isArray(page)
@@ -168,9 +174,9 @@ const GetAllOrder = async (req: Request, res: Response, next: NextFunction) => {
     const limitNumber = parseInt(limit as string, 10);
 
     const filter: any = {};
-    if (minPrice) filter.price = { $gte: parseFloat(minPrice as string) };
+    if (minPrice) filter.totalAmount = { $gte: parseFloat(minPrice as string) };
     if (maxPrice)
-      filter.price = { ...filter.price, $lte: parseFloat(maxPrice as string) };
+      filter.totalAmount = { ...filter.totalAmount, $lte: parseFloat(maxPrice as string) };
     if (orderDate) filter.orderDate = { $gte: new Date(orderDate as string) };
     if (deliveryDate)
       filter.deliveryDate = { $lte: new Date(deliveryDate as string) };
@@ -178,9 +184,7 @@ const GetAllOrder = async (req: Request, res: Response, next: NextFunction) => {
     if (doneBy) filter.doneBy = doneBy;
     if (durationInDays)
       filter.durationInDays = parseInt(durationInDays as string, 10);
-    if (productName)
-      filter.productName = { $regex: new RegExp(productName as string, 'i') };
-    if (categoryId) filter.categoryId = categoryId;
+    if (productId) filter['orderItems.productId'] = productId; // Use dot notation for nested productId
 
     const sort: any = {};
     if (sortBy) sort[sortBy as string] = sortOrder === 'desc' ? -1 : 1;
@@ -216,18 +220,27 @@ const GetSingleOrder = async (
   try {
     const { orderID } = req.params;
     const result = await OrderServices.getSingleOrderInDB(orderID);
+
     if (result) {
       res.status(200).json({
         success: true,
-        statusCode: 201,
+        statusCode: 200,
         message: 'Order retrieved successfully',
         data: result,
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        statusCode: 404,
+        message: 'User Not Found on Order list',
       });
     }
   } catch (err) {
     next(err);
   }
 };
+
+
 
 const deleteOrder = async (req: Request, res: Response, next: NextFunction) => {
   try {
@@ -272,6 +285,7 @@ const GetBestReview = async (
 ) => {
   try {
     const bestOrder = await OrderServices.getBestOrderInDB();
+    //! todo: need to fix all data
     res.status(200).json({
       success: true,
       statusCode: 200,
@@ -279,9 +293,7 @@ const GetBestReview = async (
       data: {
         order: {
           _id: bestOrder?._id,
-          productName: bestOrder?.productName,
-          categoryId: bestOrder?.categoryId,
-          price: bestOrder?.price,
+          price: bestOrder?.totalAmount,
           orderDate: bestOrder?.orderDate,
           deliveryDate: bestOrder?.deliveryDate,
           userID: bestOrder?.userID,

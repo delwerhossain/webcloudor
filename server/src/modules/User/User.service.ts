@@ -3,7 +3,7 @@ import { TUser } from './User.interface';
 import { UserModel } from './User.model';
 
 const CreateUserInDB = async (data: TUser, session: any) => {
-  console.log({ data, session });
+  // console.log({ data, session });
   const result = await UserModel.create([data], { session });
   return result[0]; // Since create() returns an array, return the first element.
 };
