@@ -27,7 +27,6 @@ const CreateOrderAndUser = async (
       description,
       doneBy,
     } = req.body;
-    console.log(req.body);
     const rowUserData = {
       name: userData.name,
       email: userData.email,
@@ -183,7 +182,7 @@ const GetAllOrder = async (req: Request, res: Response, next: NextFunction) => {
     if (userID) filter.userID = userID;
     if (doneBy) filter.doneBy = doneBy;
     if (durationInDays)
-      filter.durationInDays = parseInt(durationInDays as string, 10);
+      filter.durationInDays = parseInt(durationInDays as string);
     if (productId) filter['orderItems.productId'] = productId; // Use dot notation for nested productId
 
     const sort: any = {};

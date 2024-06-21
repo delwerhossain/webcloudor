@@ -51,9 +51,6 @@ const PaymentDetailsSchema = new Schema<IPaymentDetails>({
     },
     transactionId: {
       type: String,
-      unique: function () {
-        return ['Bkash', 'Rocket', 'Nagad', 'Upay'].includes(this.paymentType);
-      },
       trim: true,
       required: function () {
         return ['Bkash', 'Rocket', 'Nagad', 'Upay'].includes(this.paymentType);
@@ -83,9 +80,6 @@ const PaymentDetailsSchema = new Schema<IPaymentDetails>({
   sslCommerzDetails: {
     transactionId: {
       type: String,
-      unique: function () {
-        return this.paymentType === 'SSLCOMMERZ';
-      },
       trim: true,
       required: function () {
         return this.paymentType === 'SSLCOMMERZ';
@@ -110,11 +104,16 @@ const PaymentDetailsSchema = new Schema<IPaymentDetails>({
 // Ensure unique index for transactionId fields where applicable
 PaymentDetailsSchema.index(
   { 'mobileWalletDetails.transactionId': 1 },
-  { unique: true, sparse: true },
+  {
+    unique: true,
+    partialFilterExpression: {
+      paymentType: { $in: ['Bkash', 'Rocket', 'Nagad', 'Upay'] },
+    },
+  },
 );
 PaymentDetailsSchema.index(
   { 'sslCommerzDetails.transactionId': 1 },
-  { unique: true, sparse: true },
+  { unique: true, partialFilterExpression: { paymentType: 'SSLCOMMERZ' } },
 );
 
 // Define the Address sub-schema
