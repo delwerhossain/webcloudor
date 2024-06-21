@@ -102,6 +102,7 @@ const PaymentDetailsSchema = new Schema<IPaymentDetails>({
       return this.paymentType === 'COD' ? 'Pending' : 'Pending';
     },
   },
+  payDescription : { type: String, trim: true },
 });
 
 // Ensure unique index for transactionId fields where applicable

@@ -59,6 +59,7 @@ const paymentDetailsValidation = z.object({
   amount: z.number().min(0),
   date: z.date().default(new Date()),
   status: z.enum(['Pending', 'Success', 'Failed']).default('Pending'),
+  payDescription: z.string().optional(),
 });
 
 // Address schema

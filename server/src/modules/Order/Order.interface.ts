@@ -39,6 +39,7 @@ export interface IPaymentDetails {
   amount: number;
   date: Date;
   status: 'Pending' | 'Success' | 'Failed';
+  payDescription?: string;
 }
 
 export interface IAddress {
