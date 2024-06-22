@@ -2,11 +2,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import cors from 'cors';
 import express, { Request, Response } from 'express';
-import { CategoryRoutes } from './modules/Category/Category.routes';
-import { ReviewRoutes } from './modules/Review/Review.routes';
-import { OrderRoutes } from './modules/Order/Order.routes';
 import globalErrorHandler from './middlewares/globalErrorhandler';
 import notFound from './middlewares/notFound';
+import router from './routes';
 const app = express();
 
 //parsers
@@ -14,11 +12,7 @@ app.use(express.json());
 
 app.use(cors());
 
-app.use('/api/orders', OrderRoutes);
-// for Get the Best Order Based on Average Review (Rating)  /api/order/best
-app.use('/api/order', OrderRoutes);
-app.use('/api/categories', CategoryRoutes);
-app.use('/api/reviews', ReviewRoutes);
+app.use('/api/v1', router);
 
 app.get('/', (req: Request, res: Response) => {
   res.send('SERVER RUNNING!');
